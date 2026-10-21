@@ -210,3 +210,14 @@ flowchart TD
 3. KEDA monitors the queue and scales the worker when jobs need processing.
 4. The worker sends the prompt to Ollama, which runs the Qwen language model.
 5. The worker stores the result in Redis, and the client retrieves it through the API.
+
+## Screenshots
+
+### 1. API Health Check
+![FastAPI health endpoint returning a successful response](screenshots/api-health-check.png)
+
+### 2. Successful AI Inference
+![Completed inference request returning a Qwen model response](screenshots/inference-result.png)
+
+### 3. KEDA Scale-to-Zero
+![Kubernetes worker scaled to zero replicas](screenshots/scale-to-zero.png)
