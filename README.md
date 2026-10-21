@@ -187,3 +187,26 @@ The KEDA `ScaledObject` monitors the `inference_queue` Redis list. The current l
 - Real inference through Ollama and Qwen 2.5 0.5B has been tested.
 - The model runs through Ollama on the host; it is not currently running inside a Kubernetes GPU inference pod.
 - The current verified
+
+## Architecture
+
+```mermaid
+flowchart TD
+    A[Client] --> B[FastAPI Gateway]
+    B --> C[Redis Queue]
+    C --> D[KEDA Autoscaler]
+    D --> E[Kubernetes Worker]
+    E --> F[Ollama on Host Machine]
+    F --> G[Qwen 2.5 0.5B Model]
+    E --> C
+    C --> B
+    B --> H[Inference Result]
+```
+
+### How it works
+
+1. The client sends a prompt to the FastAPI gateway.
+2. FastAPI adds the job to the Redis queue.
+3. KEDA monitors the queue and scales the worker when jobs need processing.
+4. The worker sends the prompt to Ollama, which runs the Qwen language model.
+5. The worker stores the result in Redis, and the client retrieves it through the API.
